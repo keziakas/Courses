@@ -1,0 +1,524 @@
+Data Scientist Role Play: Profiling and Analyzing the Yelp Dataset Coursera Worksheet
+
+This is a 2-part assignment. In the first part, you are asked a series of questions that will help you profile and understand the data just like a data scientist would. 
+For this first part of the assignment, you will be assessed both on the correctness of your findings, as well as the code you used to arrive at your answer. 
+You will be graded on how easy your code is to read, so remember to use proper formatting and comments where necessary.
+
+In the second part of the assignment, you are asked to come up with your own inferences and analysis of the data for a particular research question you want to answer. 
+You will be required to prepare the dataset for the analysis you choose to do. 
+As with the first part, you will be graded, in part, on how easy your code is to read, so use proper formatting and comments to illustrate and communicate your intent as required.
+
+For both parts of this assignment, use this "worksheet." 
+It provides all the questions you are being asked, and your job will be to transfer your answers and SQL coding where indicated into this worksheet so that your peers can review your work. 
+You should be able to use any Text Editor (Windows Notepad, Apple TextEdit, Notepad ++, Sublime Text, etc.) to copy and paste your answers. 
+If you are going to use Word or some other page layout application, just be careful to make sure your answers and code are lined appropriately.
+In this case, you may want to save as a PDF to ensure your formatting remains intact for you reviewer.
+
+
+
+Part 1: Yelp Dataset Profiling and Understanding
+
+1. Profile the data by finding the total number of records for each of the tables below:
+	
+i. Attribute table = 10000 
+--SELECT COUNT(*) FROM Attribute
+ii. Business table = 10000 
+--SELECT COUNT(*) FROM Business
+iii. Category table = 10000 
+--SELECT COUNT(*) FROM Category
+iv. Checkin table = 10000 
+--SELECT COUNT(*) FROM Checkin
+v. elite_years table = 10000 
+--SELECT COUNT(*) FROM elite_years
+vi. friend table = 10000 
+--SELECT COUNT(*) FROM friend
+vii. hours table = 10000 
+--SELECT COUNT(*) FROM hours
+viii. photo table = 10000 
+--SELECT COUNT(*) FROM photo
+ix. review table = 10000 
+--SELECT COUNT(*) FROM review
+x. tip table = 10000 
+--SELECT COUNT(*) FROM tip
+xi. user table = 10000 
+--SELECT COUNT(*) FROM user
+	
+
+
+2. Find the total distinct records by either the foreign key or primary key for each table. 
+If two foreign keys are listed in the table, please specify which foreign key.
+
+i. Business = 10000 
+--SELECT COUNT(DISTINCT(id)) FROM Business
+
+ii. Hours = 1562 
+--SELECT COUNT(DISTINCT(business_id)) FROM Hours
+
+iii. Category = 2643 
+--SELECT COUNT(DISTINCT(business_id)) FROM Category
+
+iv. Attribute = 1115 
+--SELECT COUNT(DISTINCT(business_id)) FROM Attribute
+
+v. Review = id:10000, business_id: 8090, user_id: 9581 
+--SELECT COUNT(DISTINCT(id)) FROM Attribute
+--SELECT COUNT(DISTINCT(business_id)) FROM Attribute
+--SELECT COUNT(DISTINCT(user_id)) FROM Attribute
+
+vi. Checkin = 493 
+--SELECT COUNT(DISTINCT(business_id)) FROM Checkin
+
+vii. Photo = id: 10000, business_id: 6493
+--SELECT COUNT(DISTINCT(id)) FROM Photo
+--SELECT COUNT(DISTINCT(business_id)) FROM Photo
+
+viii. Tip = user_id: 537, business_id: 3979
+--SELECT COUNT(DISTINCT(user_id)) FROM Tip
+--SELECT COUNT(DISTINCT(business_id)) FROM Tip
+
+ix. User = 10000
+--SELECT COUNT(DISTINCT(id)) FROM User 
+    
+x. Friend = 11
+--SELECT COUNT(DISTINCT(user_id)) FROM Friend   
+   
+xi. Elite_years = 2780
+SELECT COUNT(DISTINCT(user_id)) FROM Elite_years  
+
+Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.	
+
+
+
+3. Are there any columns with null values in the Users table? Indicate "yes," or "no."
+
+	Answer: No
+	
+	
+SQL code used to arrive at answer:
+
+SELECT COUNT(*) AS NullCount FROM user   
+WHERE 
+	id IS NULL OR 
+    name IS NULL OR 
+    review_count IS NULL OR 
+    yelping_since IS NULL OR
+    useful IS NULL OR 
+    funny IS NULL OR 
+    cool IS NULL OR 
+    fans IS NULL OR 
+    average_stars IS NULL OR 
+    compliment_hot IS NULL OR 
+    compliment_more IS NULL OR 
+    compliment_profile IS NULL OR 
+    compliment_cute IS NULL OR 
+    compliment_list IS NULL OR 
+    compliment_note IS NULL OR 
+    compliment_plain IS NULL OR 
+    compliment_cool IS NULL OR 
+    compliment_funny IS NULL OR 
+    compliment_writer IS NULL OR 
+    compliment_photos IS NULL 	
+
+Output:	
+
++-----------+
+| NullCount |
++-----------+
+|         0 |
++-----------+
+	
+4. For each table and column listed below, display the smallest (minimum), largest (maximum), and average (mean) value for the following fields:
+
+	i. Table: Review, Column: Stars
+	SELECT min(Stars),max(Stars),ROUND(AVG(Stars),2) Average_Stars FROM Review
+		min: 1		max: 5		avg: 3.71 
+		
+	
+	ii. Table: Business, Column: Stars
+	SELECT min(Stars),max(Stars),ROUND(AVG(Stars),2) Average_Stars FROM Business
+		min: 1      max: 5      avg: 3.65
+		
+	
+	iii. Table: Tip, Column: Likes
+	SELECT min(Likes),max(Likes),ROUND(AVG(Likes),3) FROM Tip
+		min: 0      max: 2      avg: 0.014
+		
+	
+	iv. Table: Checkin, Column: Count
+	SELECT min(Count),max(Count),ROUND(AVG(Count),2) FROM Checkin
+		min: 1      max: 53     avg: 1.94
+		
+	
+	v. Table: User, Column: Review_count
+	SELECT min(Review_count),max(Review_count),ROUND(AVG(Review_count),2) FROM User
+		min: 0      max: 2000   avg: 24.3
+		
+
+
+5. List the cities with the most reviews in descending order:
+
+	SQL code used to arrive at answer:
+	
+	SELECT city, SUM(review_count) AS reviews --creating 2 tables to output: City and Reviews
+    FROM business 
+    GROUP BY city
+    ORDER BY reviews DESC
+	
+	Copy and Paste the Result Below:
+	
+	+-----------------+---------+
+	| city            | reviews |
+	+-----------------+---------+
+	| Las Vegas       |   82854 |
+	| Phoenix         |   34503 |
+	| Toronto         |   24113 |
+	| Scottsdale      |   20614 |
+	| Charlotte       |   12523 |
+	| Henderson       |   10871 |
+	| Tempe           |   10504 |
+	| Pittsburgh      |    9798 |
+	| Montréal        |    9448 |
+	| Chandler        |    8112 |
+	| Mesa            |    6875 |
+	| Gilbert         |    6380 |
+	| Cleveland       |    5593 |
+	| Madison         |    5265 |
+	| Glendale        |    4406 |
+	| Mississauga     |    3814 |
+	| Edinburgh       |    2792 |
+	| Peoria          |    2624 |
+	| North Las Vegas |    2438 |
+	| Markham         |    2352 |
+	| Champaign       |    2029 |
+	| Stuttgart       |    1849 |
+	| Surprise        |    1520 |
+	| Lakewood        |    1465 |
+	| Goodyear        |    1155 |
+	+-----------------+---------+
+	(Output limit exceeded, 25 of 362 total rows shown)
+	
+6. Find the distribution of star ratings to the business in the following cities:
+
+i. Avon
+
+SQL code used to arrive at answer:
+
+    SELECT stars AS [Star Rating], SUM(review_count) AS Count
+    FROM business
+    WHERE city == 'Avon'
+    GROUP BY stars	
+
+Copy and Paste the Resulting Table Below (2 columns â€“ star rating and count):
+
+	+-------------+-------+
+	| Star Rating | Count |
+	+-------------+-------+
+	|         1.5 |    10 |
+	|         2.5 |     6 |
+	|         3.5 |    88 |
+	|         4.0 |    21 |
+	|         4.5 |    31 |
+	|         5.0 |     3 |
+	+-------------+-------+
+
+ii. Beachwood
+
+SQL code used to arrive at answer:
+
+    SELECT stars AS [Star Rating], SUM(review_count) AS Count
+    FROM business
+    WHERE city == 'Beachwood'
+    GROUP BY stars	
+
+Copy and Paste the Resulting Table Below (2 columns â€“ star rating and count):
+		
+	+-------------+-------+
+	| Star Rating | Count |
+	+-------------+-------+
+	|         2.0 |     8 |
+	|         2.5 |     3 |
+	|         3.0 |    11 |
+	|         3.5 |     6 |
+	|         4.0 |    69 |
+	|         4.5 |    17 |
+	|         5.0 |    23 |
+	+-------------+-------+
+
+7. Find the top 3 users based on their total number of reviews:
+		
+	SQL code used to arrive at answer:
+
+    SELECT name AS user, review_count AS reviews
+    FROM user
+    ORDER BY review_count DESC
+    LIMIT 3		
+		
+	Copy and Paste the Result Below:
+		
+	+--------+---------+
+	| user   | reviews |
+	+--------+---------+
+	| Gerald |    2000 |
+	| Sara   |    1629 |
+	| Yuri   |    1339 |
+	+--------+---------+
+
+8. Does posing more reviews correlate with more fans?
+
+Anwser: Yes, posing more reviews correlates with more fans.
+
+	Please explain your findings and interpretation of the results:
+	
+	+-----------+---------+------+---------------------+
+	| name      | reviews | fans | yelping_since       |
+	+-----------+---------+------+---------------------+
+	| Amy       |     609 |  503 | 2007-07-19 00:00:00 |
+	| Mimi      |     968 |  497 | 2011-03-30 00:00:00 |
+	| Harald    |    1153 |  311 | 2012-11-27 00:00:00 |
+	| Gerald    |    2000 |  253 | 2012-12-16 00:00:00 |
+	| Christine |     930 |  173 | 2009-07-08 00:00:00 |
+	| Lisa      |     813 |  159 | 2009-10-05 00:00:00 |
+	| Cat       |     377 |  133 | 2009-02-05 00:00:00 |
+	| William   |    1215 |  126 | 2015-02-19 00:00:00 |
+	| Fran      |     862 |  124 | 2012-04-05 00:00:00 |
+	| Lissa     |     834 |  120 | 2007-08-14 00:00:00 |
+	| Mark      |     861 |  115 | 2009-05-31 00:00:00 |
+	| Tiffany   |     408 |  111 | 2008-10-28 00:00:00 |
+	| bernice   |     255 |  105 | 2007-08-29 00:00:00 |
+	| Roanna    |    1039 |  104 | 2006-03-28 00:00:00 |
+	| Angela    |     694 |  101 | 2010-10-01 00:00:00 |
+	| .Hon      |    1246 |  101 | 2006-07-19 00:00:00 |
+	| Ben       |     307 |   96 | 2007-03-10 00:00:00 |
+	| Linda     |     584 |   89 | 2005-08-07 00:00:00 |
+	| Christina |     842 |   85 | 2012-10-08 00:00:00 |
+	| Jessica   |     220 |   84 | 2009-01-12 00:00:00 |
+	| Greg      |     408 |   81 | 2008-02-16 00:00:00 |
+	| Nieves    |     178 |   80 | 2013-07-08 00:00:00 |
+	| Sui       |     754 |   78 | 2009-09-07 00:00:00 |
+	| Yuri      |    1339 |   76 | 2008-01-03 00:00:00 |
+	| Nicole    |     161 |   73 | 2009-04-30 00:00:00 |
+	+-----------+---------+------+---------------------+
+	(Output limit exceeded, 25 of 10000 total rows shown)
+	
+9. Are there more reviews with the word "love" or with the word "hate" in them?
+
+	Answer:
+
+	
+	SQL code used to arrive at answer:
+
+	SELECT COUNT(*) AS [Love Count]
+	FROM review							
+	WHERE text LIKE "%love%"
+
+	+------------+
+	| Love Count |
+	+------------+
+	|       1780 |
+	+------------+
+	
+	SELECT COUNT(*) AS [Hate Count]
+	FROM review							
+	WHERE text LIKE "%hate%"
+
+	+------------+
+	| Hate Count |
+	+------------+
+	|       232  |
+	+------------+
+	
+10. Find the top 10 users with the most fans:
+
+	SQL code used to arrive at answer:
+
+		SELECT name, fans
+		FROM user
+		ORDER BY fans DESC
+		LIMIT 10	
+	
+	Copy and Paste the Result Below:
+
+	+-----------+------+
+	| name      | fans |
+	+-----------+------+
+	| Amy       |  503 |
+	| Mimi      |  497 |
+	| Harald    |  311 |
+	| Gerald    |  253 |
+	| Christine |  173 |
+	| Lisa      |  159 |
+	| Cat       |  133 |
+	| William   |  126 |
+	| Fran      |  124 |
+	| Lissa     |  120 |
+	+-----------+------+	
+		
+
+Part 2: Inferences and Analysis
+
+1. Pick one city and category of your choice and group the businesses in that city or category by their overall star rating. 
+Compare the businesses with 2-3 stars to the businesses with 4-5 stars and answer the following questions. 
+Include your code.
+
+	
+i. Do the two groups you chose to analyze have a different distribution of hours?
+A: The 4-5 star group tends to have shorter hours then the 2-3 star group.
+ii. Do the two groups you chose to analyze have a different number of reviews?
+A: The second group 4-5 star tends to have more reviews than the first group.
+iii. Are you able to infer anything from the location data provided between these two groups? Explain.
+A: The zip-code is different for every business.
+
+SQL code used for analysis:
+
+SELECT B.name,
+		B.review_count,
+		H.hours,
+		postal_code,
+		
+		--ReCoding Days
+		CASE
+			WHEN hours LIKE "%monday%" THEN 1
+			WHEN hours LIKE "%tuesday%" THEN 2
+			WHEN hours LIKE "%wednesday%" THEN 3
+			WHEN hours LIKE "%thursday%" THEN 4
+			WHEN hours LIKE "%friday%" THEN 5
+			WHEN hours LIKE "%saturday%" THEN 6
+			WHEN hours LIKE "%sunday%" THEN 7
+		END AS Ord,
+		
+		--Recoding The Reviews
+		CASE
+			WHEN B.stars BETWEEN 2 AND 3 THEN '2-3 stars'
+			WHEN B.stars BETWEEN 4 AND 5 THEN '4-5 stars'
+		END AS Star_Rating
+	
+	FROM business B INNER JOIN hours H 
+	ON B.id = H.business_id INNER JOIN category C
+	ON C.business_id = B.id
+	
+	WHERE (B.city == 'Toronto' 	AND	C.category LIKE 'Food')
+	AND
+	(B.stars BETWEEN 2 AND 3
+	OR
+	B.stars BETWEEN 4 AND 5)
+	GROUP BY stars,Ord
+	ORDER BY Star_Rating, Ord ASC
+
+Output
+
+	+--------------------------------+--------------+----------------------+-------------+-----+-------------+
+	| name                           | review_count | hours                | postal_code | ord | star_rating |
+	+--------------------------------+--------------+----------------------+-------------+-----+-------------+
+	| Walgreens                      |            6 | Monday|8:00-22:00    | 89121       |   1 | 2-3 stars   |
+	| Walgreens                      |            6 | Tuesday|8:00-22:00   | 89121       |   2 | 2-3 stars   |
+	| Walgreens                      |            6 | Wednesday|8:00-22:00 | 89121       |   3 | 2-3 stars   |
+	| Walgreens                      |            6 | Thursday|8:00-22:00  | 89121       |   4 | 2-3 stars   |
+	| Walgreens                      |            6 | Friday|8:00-22:00    | 89121       |   5 | 2-3 stars   |
+	| Walgreens                      |            6 | Saturday|8:00-22:00  | 89121       |   6 | 2-3 stars   |
+	| Walgreens                      |            6 | Sunday|8:00-22:00    | 89121       |   7 | 2-3 stars   |
+	| Red Rock Canyon Visitor Center |           32 | Monday|8:00-16:30    | 89161       |   1 | 4-5 stars   |
+	| Desert Medical Equipment       |            4 | Monday|8:00-17:00    | 89118       |   1 | 4-5 stars   |
+	| Red Rock Canyon Visitor Center |           32 | Tuesday|8:00-16:30   | 89161       |   2 | 4-5 stars   |
+	| Desert Medical Equipment       |            4 | Tuesday|8:00-17:00   | 89118       |   2 | 4-5 stars   |
+	| Red Rock Canyon Visitor Center |           32 | Wednesday|8:00-16:30 | 89161       |   3 | 4-5 stars   |
+	| Desert Medical Equipment       |            4 | Wednesday|8:00-17:00 | 89118       |   3 | 4-5 stars   |
+	| Red Rock Canyon Visitor Center |           32 | Thursday|8:00-16:30  | 89161       |   4 | 4-5 stars   |
+	| Desert Medical Equipment       |            4 | Thursday|8:00-17:00  | 89118       |   4 | 4-5 stars   |
+	| Red Rock Canyon Visitor Center |           32 | Friday|8:00-16:30    | 89161       |   5 | 4-5 stars   |
+	| Desert Medical Equipment       |            4 | Friday|8:00-17:00    | 89118       |   5 | 4-5 stars   |
+	| Red Rock Canyon Visitor Center |           32 | Saturday|8:00-16:30  | 89161       |   6 | 4-5 stars   |
+	| Red Rock Canyon Visitor Center |           32 | Sunday|8:00-16:30    | 89161       |   7 | 4-5 stars   |
+	+--------------------------------+--------------+----------------------+-------------+-----+-------------+	
+
+2. Group business based on the ones that are open and the ones that are closed. 
+What differences can you find between the ones that are still open and the ones that are closed? 
+List at least two differences and the SQL code you used to arrive at your answer.
+		
+i. Difference 1:
+
+A:The businesses that are open tend to have more reviews than those closed on average.
+		
+        Average_Open[Review] : 31.76
+        Average_Closed[Review] : 23.20         
+         
+ii. Difference 2:
+         
+        Average_Open[stars] : 3.68
+        Average_Closed[stars] : 3.52           
+         
+SQL code used for analysis:
+
+SELECT COUNT(DISTINCT(id)),
+		ROUND(AVG(review_count),2) Average_review_count ,
+		SUM(review_count),
+		ROUND(AVG(stars),2) Average_Stars,
+		is_open
+	FROM business
+	GROUP BY is_open
+	
+Output
+-- 0 = No
+-- 1 = Yes
++---------------------+----------------------+-------------------+---------------+---------+
+| COUNT(DISTINCT(id)) | Average_review_count | SUM(review_count) | Average_Stars | is_open |
++---------------------+----------------------+-------------------+---------------+---------+
+|                1520 |                 23.2 |             35261 |          3.52 |       0 |
+|                8480 |                31.76 |            269300 |          3.68 |       1 |
++---------------------+----------------------+-------------------+---------------+---------+
+
+3. For this last part of your analysis, you are going to choose the type of analysis you want to 
+conduct on the Yelp dataset and are going to prepare the data for analysis.
+
+Ideas for analysis include: 
+
+-Parsing out keywords and business attributes for sentiment analysis 
+-Clustering businesses to find commonalities or anomalies between them 
+-Predicting the overall star rating for a business 
+-Predicting the number of fans a user will have, and so on. 
+
+These are just a few examples to get you started, 
+so feel free to be creative and come up with your own problem you want to solve. 
+Provide answers, in-line, to all of the following:
+	
+i. Indicate the type of analysis you chose to do:
+         
+	What state has the best average rating?	 
+         
+ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data:
+                         
+The average of stars was calculated and the average of opening for each state. 
+
+Conclusion
+ 
+"WI", "NV", "NC", "AZ" and "OH", are successful, the limit is the average to be above 3.70 and they have better reviews.
+On the contrary, "ON", "PA", "HLD", "QC", "EDH", "NI", "BW" and "IL" have lower stars.    
+	
+iii. Output of your finished dataset:
+         
++-------+--------------+---------------+
+| state | num_business | average_stars |
++-------+--------------+---------------+
+| WI    |           21 |          4.12 |
+| NV    |          100 |          4.09 |
+| NC    |           50 |          4.07 |
+| AZ    |          230 |          4.01 |
+| OH    |           77 |          3.75 |
+| ON    |          151 |          3.69 |
+| PA    |           24 |          3.63 |
+| HLD   |            2 |           3.5 |
+| QC    |           12 |          3.29 |
+| EDH   |           11 |          3.23 |
+| NI    |            3 |           3.0 |
+| BW    |           13 |          2.81 |
+| IL    |            2 |           2.0 |
++-------+--------------+---------------+
+         
+iv. Provide the SQL code you used to create your final dataset:
+
+SELECT 
+    business.state,
+       count(business.id) num_business, 
+       round(avg(business.stars),2) average_stars           
+FROM (business INNER JOIN category ON business.id = category.business_id)
+GROUP BY business.state
+ORDER BY average_stars DESC
