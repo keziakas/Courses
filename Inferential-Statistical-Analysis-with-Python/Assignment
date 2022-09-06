@@ -1,0 +1,71 @@
+Background
+
+  
+The study about the effects of the consumption of chocolate (dark chocolate versus white chocolate) on cyclists during cycling. The parameter of interest is the bicycle sprint performance (in meters). 
+The results after conducting it on 9 male participants, was measured in 2 trails, one after consumption of dark chocolate for a week and one after consumption of white chocolate for a week. So, the scenario here is that we have a Population Paired Data. 
+
+Hypothesis Definition
+
+
+We will first set our Hypotheses. We will set 2 sets of hypothesis, one for comparison between the baseline and any form of chocolate and then between dark and white chocolate. First we will set it for baseline versus any form of chocolate. 
+
+Null Hypothesis 1: The consumption of dark chocolate and white chocolate have NO effect on the cyclists traveling equal distances.   
+Alternate Hypothesis 1: There is significant difference between the consumption of dark and white chocolates on the cyclists traveling equal distances.
+  
+
+H01 = dark chocolate - white chocolate = 0 
+HAlt1 = NO H0_1
+  
+
+2-sided Hypothesis comparison between dark and white chocolates. 
+  
+
+Null Hypothesis 2: There is no significant difference between consuming dark and white chocolates.   
+Alternate Hypothesis 2: There is significant difference between consuming dark and white chocolates. 
+  
+
+H02 = mu1 - mu2 = 0 
+HAlt2 = NO  H0_2
+    
+
+Examining our data and checking assumptions  
+
+Since the order in which participants consumed dark or white chocolate was selected at random,  first we will consider our data to be random sample and both dark or white chocolate are independent as a variable.   
+The second assumption is whether our data is normally distributed. We have been told to consider it normal and we cannot apply Central Limit Theorem to avoid normality check, so our sample of data we will considered to be normally distributed.
+
+    
+
+Analysis of results
+
+From the data, we get the following results:
+
+mu1 = mean distance dark chocolate  
+mu2 = mean distance white chocolate 
+mu_baseline = baseline mean distance
+
+The difference in mean (mu1 - mu2) = 1606 - 1419 = 187 meters  
+We will consider our significance level alpha to be α = 0.05  
+
+
+Decision 
+
+From our analysis of the results we got that dark chocolate performs better than white chocolate and the baseline results. This might be referring only for our sample and so, we will check our hypothesis and the confidence interval.
+Difference in performance of cyclists before and after having chocolates  
+
+H0_1   
+HAtl_1 
+
+From our sample we see that the difference between having either chocolate and the baseline performance is positive, implying that for this sample people performed better after having chocolate
+
+
+
+The effect of each type of chocolate on the performance of the cyclists.  
+
+H0_2 
+HAlt_2    
+
+The difference between consuming dark chocolate and white chocolate on the distance cycled is over 187 meters in favor of dark chocolate. From our sample the dark chocolate makes the cyclists perform better.
+
+Conclusion
+
+From this, we can conclude that there is significant difference between the performances of cyclists when they took chocolates versus their performance when they did not take chocolates. Chocolates seem to have a positive effect on their performance. In addition, consuming dark chocolate gives a greater performance boost than consuming white chocolates.
